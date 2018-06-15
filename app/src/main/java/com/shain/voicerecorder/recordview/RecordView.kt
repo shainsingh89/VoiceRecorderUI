@@ -20,13 +20,8 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import android.widget.Chronometer
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import com.shain.voicerecorder.R
-
 import java.io.IOException
 
 /**
@@ -37,7 +32,7 @@ class RecordView : RelativeLayout {
     var smallBlinkingMic: ImageView? = null
     private var basketImg: ImageView? = null
     private var counterTime: Chronometer? = null
-    var slideToCancel: TextView? = null
+    private var slideToCancel: TextView? = null
     private var slideToCancelLayout: LinearLayout? = null
     private var arrow: ImageView? = null
 
@@ -187,7 +182,7 @@ class RecordView : RelativeLayout {
 
     }
 
-    internal fun reset(view: View?) {
+    private fun reset(view: View?) {
         val set = AnimatorSet()
         val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f)
         val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f)
@@ -319,7 +314,7 @@ class RecordView : RelativeLayout {
     }
 
 
-     fun onActionDown(recordBtn: RecordButton, motionEvent: MotionEvent) {
+    fun onActionDown(recordBtn: RecordButton, motionEvent: MotionEvent) {
 
         if (recordListener != null)
             recordListener!!.onStart()
@@ -341,7 +336,7 @@ class RecordView : RelativeLayout {
 
     }
 
-     fun onActionMove(recordBtn: RecordButton, motionEvent: MotionEvent) {
+    fun onActionMove(recordBtn: RecordButton, motionEvent: MotionEvent) {
 
 
         if (!isSwiped) {
@@ -388,7 +383,7 @@ class RecordView : RelativeLayout {
         }
     }
 
-     fun onActionUp(recordBtn: RecordButton) {
+    fun onActionUp(recordBtn: RecordButton) {
 
         elapsedTime = System.currentTimeMillis() - startTime
 
@@ -444,8 +439,8 @@ class RecordView : RelativeLayout {
     }
 
 
-    fun setOnRecordListener(recrodListener: OnRecordListener) {
-        this.recordListener = recrodListener
+    fun setOnRecordListener(recordListener: OnRecordListener) {
+        this.recordListener = recordListener
     }
 
     fun setOnBasketAnimationEndListener(onBasketAnimationEndListener: OnBasketAnimationEnd) {
@@ -456,9 +451,9 @@ class RecordView : RelativeLayout {
         isSoundEnabled = isEnabled
     }
 
-   /* fun setLessThanSecondAllowed(isAllowed: Boolean) {
-        isLessThanSecondAllowed = isAllowed
-    }*/
+    /* fun setLessThanSecondAllowed(isAllowed: Boolean) {
+         isLessThanSecondAllowed = isAllowed
+     }*/
 
     fun setSlideToCancelText(text: String) {
         slideToCancel!!.text = text
@@ -480,7 +475,7 @@ class RecordView : RelativeLayout {
         setMarginRight(marginRight, false)
     }
 
-    fun setCancelToBound(value: Float){
+    fun setCancelToBound(value: Float) {
         cancelBounds = value
     }
 
@@ -491,20 +486,16 @@ class RecordView : RelativeLayout {
         RECORD_ERROR = errorSound
     }
 
-    companion object {
 
-
-        fun setAllParentsClip(view: View, enabled: Boolean) {
-            var view1 = view
-            while (view1.parent != null && view1.parent is ViewGroup) {
-                val viewGroup = view1.parent as ViewGroup
-                viewGroup.clipChildren = enabled
-                viewGroup.clipToPadding = enabled
-                view1 = viewGroup
-            }
+    private fun setAllParentsClip(view: View, enabled: Boolean) {
+        var view = view
+        while (view.parent != null && view.parent is ViewGroup) {
+            val viewGroup = view.parent as ViewGroup
+            viewGroup.clipChildren = enabled
+            viewGroup.clipToPadding = enabled
+            view = viewGroup
         }
     }
-
 
 }
 
